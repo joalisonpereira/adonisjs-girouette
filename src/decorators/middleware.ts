@@ -7,6 +7,38 @@ import {
 import { REFLECT_RESOURCE_MIDDLEWARE_KEY, REFLECT_ROUTES_KEY } from '../constants.js'
 
 /**
+ * Decorator for applying middleware to all methods in a class in AdonisJS v6
+ * @param middleware The middleware function(s) or parsed named middleware to apply
+ * @returns A decorator function
+ * @example
+ * // In an AdonisJS v6 controller:
+ * import { middleware } from '#start/kernel'
+ *
+ * @GroupMiddleware([middleware.auth()])
+ * export default class ProtectedController {
+ *   // All methods in this controller will be protected by the auth middleware
+ * }
+ */
+export const GroupMiddleware = (middleware: OneOrMore<MiddlewareFn | ParsedNamedMiddleware>) => {
+  return (target: any) => {
+    const routes = Reflect.getMetadata(REFLECT_ROUTES_KEY, target) || {}
+    for (const key of Object.getOwnPropertyNames(target.prototype)) {
+      if (key !== 'constructor' && typeof target.prototype[key] === 'function') {
+        if (!routes[key]) {
+          routes[key] = {}
+        }
+        if (!routes[key].middleware) {
+          routes[key].middleware = [middleware]
+        } else {
+          routes[key].middleware.push(middleware)
+        }
+      }
+    }
+    Reflect.defineMetadata(REFLECT_ROUTES_KEY, routes, target)
+  }
+}
+
+/**
  * Decorator for applying middleware to a route in AdonisJS v6
  * @param middleware The middleware function(s) or parsed named middleware to apply
  * @returns A decorator function

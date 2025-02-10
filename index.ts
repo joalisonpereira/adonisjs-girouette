@@ -11,7 +11,7 @@ export { configure } from './configure.js'
 
 export * from './src/decorators/methods.js'
 export * from './src/decorators/middleware.js'
-export { RouteMiddleware as Middleware } from './src/decorators/middleware.js'
+export { RouteMiddleware as Middleware, GroupMiddleware } from './src/decorators/middleware.js'
 export * from './src/decorators/resource.js'
 export * from './src/decorators/where.js'
 export * from './src/decorators/controller.js'
