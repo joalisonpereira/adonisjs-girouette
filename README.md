@@ -31,6 +31,7 @@ import {
   Delete,
   Any,
   Middleware,
+  GroupMiddleware,
   Resource,
   Where,
 } from '@softwarecitadel/girouette'
@@ -75,6 +76,21 @@ import { Get, Middleware } from '@softwarecitadel/girouette'
 export default class UsersController {
   @Get('/admin/users')
   @Middleware([middleware.auth()])
+  async adminIndex({ response }: HttpContext) {
+    // This route is protected by the auth middleware
+  }
+}
+```
+
+#### GroupMiddleware Decorator
+
+```typescript
+import { middleware } from '#start/kernel'
+import { Get, GroupMiddleware } from '@softwarecitadel/girouette'
+
+@GroupMiddleware([middleware.auth()])
+export default class UsersController {
+  @Get('/admin/users')
   async adminIndex({ response }: HttpContext) {
     // This route is protected by the auth middleware
   }
