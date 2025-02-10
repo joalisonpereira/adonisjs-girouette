@@ -94,6 +94,11 @@ export default class UsersController {
   async adminIndex({ response }: HttpContext) {
     // This route is protected by the auth middleware
   }
+
+  @Get('/admin/posts')
+  async adminPosts({ response }: HttpContext) {
+    // This route is protected by the auth middleware
+  }
 }
 ```
 
